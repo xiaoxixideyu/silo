@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: server-install
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 300
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: silo-install
+          image: silo
+          imagePullPolicy: Never # TODO Remove this
+          envFrom:
+            - configMapRef:
+                name: server-env
+          env:
+            # Install服务特定配置覆盖
+            - name: QQFUN_APP_NAME
+              value: "install"
+            - name: QQFUN_LOG_FILENAME
+              value: "install.log"
+          args:
+            - -init
+            - -p
+            - "QQFUN"

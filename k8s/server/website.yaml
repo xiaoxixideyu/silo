@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: website-gateway
+spec:
+  selector:
+    app: website
+  type: ClusterIP
+  ports:
+    - port: 8081
+      targetPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: website
+spec:
+  clusterIP: None
+  selector:
+    app: website
+  ports:
+    - port: 8081
+      targetPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      labels:
+        app: website
+    spec:
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: app-logs
+          emptyDir: {}
+        - name: filebeat-config
+          configMap:
+            name: filebeat-config
+      containers:
+        - name: website
+          image: silo
+          imagePullPolicy: Never # TODO Remove this
+          args:
+            - /app/website
+            - -p
+            - "QQFUN"
+          envFrom:
+            - configMapRef:
+                name: server-env
+          env:
+            - name: QQFUN_APP_SERVER_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            # Website服务特定配置覆盖
+            - name: QQFUN_APP_NAME
+              value: "QQFUN"
+            - name: QQFUN_APP_SERVER_PORT
+              value: "8081"
+            - name: QQFUN_APP_LANGUAGE
+              value: "en-US"
+            - name: QQFUN_PLATFORM_ADDR
+              value: "http://localhost:8081"
+            - name: QQFUN_LOG_FILENAME
+              value: "website.log"
+            - name: QQFUN_API_BASE_API_CONFIG_PORT
+              value: "8081"
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: app-logs
+              mountPath: /app/logs
+          startupProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 10
+            failureThreshold: 20
+            exec:
+              command:
+                - /app/website
+                - -p
+                - "QQFUN"
+          livenessProbe:
+            periodSeconds: 5
+            timeoutSeconds: 1
+            exec:
+              command:
+                - /app/website
+                - -p
+                - "QQFUN"
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 3
+            exec:
+              command:
+                - /app/website
+                - -p
+                - "QQFUN"
+      initContainers:
+        - name: filebeat
+          image: elastic/filebeat:8.16.1
+          args:
+            - "-e"
+            - "--strict.perms=false"
+          restartPolicy: Always # makes it as a sidecar container
+          volumeMounts:
+            - name: app-logs
+              mountPath: /app/logs
+            - name: filebeat-config
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml

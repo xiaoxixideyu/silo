@@ -1,0 +1,14 @@
+FROM golang:1.24-alpine AS builder
+WORKDIR /app
+ENV CGO_ENABLED=0
+COPY go.mod ./
+RUN go mod download
+COPY . .
+RUN go build -o /out/admin ./cmd/admin/main.go
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+COPY --from=builder /out/admin /app/admin
+WORKDIR /app
+ENTRYPOINT ["./admin"]
+CMD ["start"]

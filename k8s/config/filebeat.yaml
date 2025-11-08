@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+  labels:
+    k8s-app: filebeat
+data:
+  filebeat.yml: |-
+    filebeat.inputs:
+    - type: log
+      enabled: true
+      paths:
+        - /app/logs/*.log*
+      scan_frequency: 1s
+      tags: ["json"]
+      json.keys_under_root: true
+    output.elasticsearch:
+      hosts: ["http://elasticsearch:9200"]
+      username: "elastic"
+      password: "Ae*7h0RlyLMGol60h_uZ"
+      index: "silo-filebeat"
+      ssl.verification_mode: none
+    setup.ilm.enabled: true
+    setup.template.enabled: true
+    setup.template.name: "silo-filebeat"
+    setup.template.pattern: "silo-filebeat*"
+    setup.template.settings:
+      index.number_of_shards: 1
+      index.number_of_replicas: 1
+      index.unassigned.node_left.delayed_timeout: 10m
+      index.refresh_interval: 30s
+    setup.template.append_fields:
+    - name: time
+      type: date
+    logging.to_files: false
+    logging.to_syslog: false

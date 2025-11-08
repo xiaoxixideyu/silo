@@ -1,0 +1,73 @@
+app:
+  name: admin
+  environment: development
+  debug: true
+  timezone: Asia/Singapore
+  server_id: admin-1
+  server_host: 0.0.0.0
+  server_port: 8080
+  language: en-US
+
+platform:
+  addr: http://localhost:8080
+
+cache:
+  mutex_lock_ttl: 10
+  cache_ttl: 3600
+  cache_partition: 10
+
+postgres:
+  enabled: true
+  debug: true
+  dsn: postgres://silo:silo@localhost:15432/silo?sslmode=disable&TimeZone=Asia/Singapore
+  prepare_stmt: true
+  max_idle_conns: 10
+  max_open_conns: 100
+  monitor_interval: 60s
+
+redis:
+  enabled: true
+  cluster_enabled: false
+  addr: localhost:6379
+  password: ""
+
+log:
+  level: debug
+  struct_log: true
+  pretty: true
+  no_color: false
+  with_server_info: true
+  console_logging_enabled: true
+  file_logging_enabled: true
+  directory: "./logs"
+  filename: "admin.log"
+  file_permission: "644"
+  max_size: 100
+  max_backups: 3
+  max_age: 28
+  time_field_format: "2006-01-02 15:04:05.000"
+  timestamp_field_name: "timestamp"
+  level_field_name: "level"
+  message_field_name: "message"
+  error_field_name: "error"
+
+api:
+  base_api_config:
+    skip_auth: false
+    swagger: true
+    port: 8080
+    cors: true
+    request_log_enabled: true
+    rate_limit:
+      enabled: true
+      rate: 100
+    front_domain: ""
+    request_ttl: 60s
+    request_key: ""
+  auth:
+    signing_key: "your-secret-key"
+    online_time: 7200
+  super_admin:
+    name: "admin"
+    email: "admin@example.com"
+    password: "admin123"
