@@ -26,7 +26,8 @@ func NewApp(cfg *config.CommonConfig, e *echo.Echo, adminHandler handler.AdminHa
 	// 设置服务器地址
 	baseApp.SetServerAddress(fmt.Sprintf("%s:%d", cfg.App.ServerHost, cfg.App.ServerPort))
 	// 初始化路由
-	adminHandler.InitRouter(e)
+	g := e.Group("")
+	adminHandler.InitRouter(g)
 
 	// 根据配置决定是否添加 Swagger 路由
 	if cfg.Api.BaseApiConfig.Swagger {

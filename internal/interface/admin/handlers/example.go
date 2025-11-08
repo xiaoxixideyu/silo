@@ -12,7 +12,7 @@ import (
 )
 
 type ExampleHandler interface {
-	InitRouter(g *echo.Group)
+	echo_handle.HandlerInterface
 }
 
 type ExampleHandlerImpl struct {

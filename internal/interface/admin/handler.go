@@ -2,6 +2,7 @@ package admin
 
 import (
 	"silo/internal/interface/admin/handlers"
+	"silo/pkg/echo_handle"
 
 	"github.com/labstack/echo/v4"
 )
@@ -22,22 +23,26 @@ import (
 // @BasePath /api/v1
 
 type AdminHandler interface {
-	InitRouter(e *echo.Echo)
+	echo_handle.HandlerInterface
 }
 
 type adminHandlerImpl struct {
-	exampleHandler handlers.ExampleHandler
+	handlers []echo_handle.HandlerInterface
 }
 
 func NewAdminHandler(
 	exampleHandler handlers.ExampleHandler,
 ) AdminHandler {
 	return &adminHandlerImpl{
-		exampleHandler: exampleHandler,
+		handlers: []echo_handle.HandlerInterface{
+			exampleHandler,
+		},
 	}
 }
 
-func (h *adminHandlerImpl) InitRouter(e *echo.Echo) {
+func (h *adminHandlerImpl) InitRouter(e *echo.Group) {
 	group := e.Group("/api/v1")
-	h.exampleHandler.InitRouter(group)
+	for _, handler := range h.handlers {
+		handler.InitRouter(group)
+	}
 }

@@ -26,7 +26,8 @@ func NewApp(cfg *config.CommonConfig, e *echo.Echo, websiteHandler handler.Websi
 	// 设置服务器地址
 	baseApp.SetServerAddress(fmt.Sprintf("%s:%d", cfg.App.ServerHost, cfg.App.ServerPort))
 	// 初始化路由
-	websiteHandler.InitRouter(e)
+	g := e.Group("")
+	websiteHandler.InitRouter(g)
 
 	// 根据配置决定是否添加 Swagger 路由
 	if cfg.Api.BaseApiConfig.Swagger {

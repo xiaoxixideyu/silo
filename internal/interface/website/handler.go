@@ -2,6 +2,7 @@ package website
 
 import (
 	"silo/internal/interface/website/handlers"
+	"silo/pkg/echo_handle"
 
 	"github.com/labstack/echo/v4"
 )
@@ -22,22 +23,26 @@ import (
 // @BasePath /api/v1
 
 type WebsiteHandler interface {
-	InitRouter(e *echo.Echo)
+	echo_handle.HandlerInterface
 }
 
 type WebsiteHandlerImpl struct {
-	exampleHandler handlers.ExampleHandler
+	handlers []echo_handle.HandlerInterface
 }
 
 func NewWebsiteHandler(
 	exampleHandler handlers.ExampleHandler,
 ) WebsiteHandler {
 	return &WebsiteHandlerImpl{
-		exampleHandler: exampleHandler,
+		handlers: []echo_handle.HandlerInterface{
+			exampleHandler,
+		},
 	}
 }
 
-func (h *WebsiteHandlerImpl) InitRouter(e *echo.Echo) {
+func (h *WebsiteHandlerImpl) InitRouter(e *echo.Group) {
 	g := e.Group("/api/v1")
-	h.exampleHandler.InitRouter(g)
+	for _, handler := range h.handlers {
+		handler.InitRouter(g)
+	}
 }
