@@ -18,11 +18,11 @@ spec:
                 name: server-env
           env:
             # Install服务特定配置覆盖
-            - name: QQFUN_APP_NAME
+            - name: SILO_APP_NAME
               value: "install"
-            - name: QQFUN_LOG_FILENAME
+            - name: SILO_LOG_FILENAME
               value: "install.log"
           args:
             - -init
             - -p
-            - "QQFUN"
+            - "SILO"

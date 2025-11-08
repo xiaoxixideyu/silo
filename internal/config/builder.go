@@ -107,7 +107,7 @@ func DefaultConfigMap() map[string]interface{} {
 	return defaultsMap
 }
 
-// NewConfigWithPrefix 创建配置，使用默认前缀 QQFUN，环境变量优先级最高
+// NewConfigWithPrefix 创建配置，使用默认前缀 SILO，环境变量优先级最高
 func NewConfigWithPrefix(configFile string, prefix string) *viper.Viper {
 	v := viper.New()
 

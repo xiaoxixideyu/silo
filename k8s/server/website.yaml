@@ -55,27 +55,27 @@ spec:
           args:
             - /app/website
             - -p
-            - "QQFUN"
+            - "SILO"
           envFrom:
             - configMapRef:
                 name: server-env
           env:
-            - name: QQFUN_APP_SERVER_HOST
+            - name: SILO_APP_SERVER_HOST
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
             # Website服务特定配置覆盖
-            - name: QQFUN_APP_NAME
-              value: "QQFUN"
-            - name: QQFUN_APP_SERVER_PORT
+            - name: SILO_APP_NAME
+              value: "SILO"
+            - name: SILO_APP_SERVER_PORT
               value: "8081"
-            - name: QQFUN_APP_LANGUAGE
+            - name: SILO_APP_LANGUAGE
               value: "en-US"
-            - name: QQFUN_PLATFORM_ADDR
+            - name: SILO_PLATFORM_ADDR
               value: "http://localhost:8081"
-            - name: QQFUN_LOG_FILENAME
+            - name: SILO_LOG_FILENAME
               value: "website.log"
-            - name: QQFUN_API_BASE_API_CONFIG_PORT
+            - name: SILO_API_BASE_API_CONFIG_PORT
               value: "8081"
           ports:
             - containerPort: 8081
@@ -91,7 +91,7 @@ spec:
               command:
                 - /app/website
                 - -p
-                - "QQFUN"
+                - "SILO"
           livenessProbe:
             periodSeconds: 5
             timeoutSeconds: 1
@@ -99,7 +99,7 @@ spec:
               command:
                 - /app/website
                 - -p
-                - "QQFUN"
+                - "SILO"
           readinessProbe:
             initialDelaySeconds: 20
             periodSeconds: 2
@@ -109,7 +109,7 @@ spec:
               command:
                 - /app/website
                 - -p
-                - "QQFUN"
+                - "SILO"
       initContainers:
         - name: filebeat
           image: elastic/filebeat:8.16.1

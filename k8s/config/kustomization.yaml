@@ -9,73 +9,73 @@ configMapGenerator:
   - name: server-env
     literals:
       # 应用基础配置 - 默认值，可在具体部署时覆盖
-      - QQFUN_APP_NAME=silo-website # 应用名称，用于Redis前缀和日志标识，例如silo-admin、silo-website
-      - QQFUN_APP_ENVIRONMENT=dev1 # 运行环境：development/production/staging
-      - QQFUN_APP_DEBUG=false # 是否启用调试模式
-      - QQFUN_APP_TIMEZONE=Asia/Singapore # 应用时区设置
-      - QQFUN_APP_SERVER_PORT=3101 # 服务器监听端口
-      - QQFUN_APP_LANGUAGE=en-US # 应用默认语言
+      - SILO_APP_NAME=silo-website # 应用名称，用于Redis前缀和日志标识，例如silo-admin、silo-website
+      - SILO_APP_ENVIRONMENT=dev1 # 运行环境：development/production/staging
+      - SILO_APP_DEBUG=false # 是否启用调试模式
+      - SILO_APP_TIMEZONE=Asia/Singapore # 应用时区设置
+      - SILO_APP_SERVER_PORT=3101 # 服务器监听端口
+      - SILO_APP_LANGUAGE=en-US # 应用默认语言
       # 平台服务配置
-      - QQFUN_PLATFORM_ADDR=http://localhost:8080 # 平台服务地址
-      - QQFUN_PLATFORM_TIMEOUT=30s # 平台请求超时时间
-      - QQFUN_PLATFORM_RETRY_COUNT=3 # 平台请求重试次数
-      - QQFUN_PLATFORM_RETRY_WAIT_TIME=1s # 平台请求重试等待时间
-      - QQFUN_PLATFORM_API_KEY= # 平台API密钥
-      - QQFUN_PLATFORM_AUTH_TOKEN= # 平台认证令牌
-      - QQFUN_PLATFORM_DEBUG=false # 是否启用平台调试模式
+      - SILO_PLATFORM_ADDR=http://localhost:8080 # 平台服务地址
+      - SILO_PLATFORM_TIMEOUT=30s # 平台请求超时时间
+      - SILO_PLATFORM_RETRY_COUNT=3 # 平台请求重试次数
+      - SILO_PLATFORM_RETRY_WAIT_TIME=1s # 平台请求重试等待时间
+      - SILO_PLATFORM_API_KEY= # 平台API密钥
+      - SILO_PLATFORM_AUTH_TOKEN= # 平台认证令牌
+      - SILO_PLATFORM_DEBUG=false # 是否启用平台调试模式
       # 缓存配置
-      - QQFUN_CACHE_MUTEX_LOCK_TTL=10 # 缓存互斥锁过期时间(秒)
-      - QQFUN_CACHE_CACHE_TTL=3600 # 缓存数据过期时间(秒)
-      - QQFUN_CACHE_CACHE_PARTITION=10 # 缓存分区数，此值不能随意修改会导致缓存保存到不同的节点中
+      - SILO_CACHE_MUTEX_LOCK_TTL=10 # 缓存互斥锁过期时间(秒)
+      - SILO_CACHE_CACHE_TTL=3600 # 缓存数据过期时间(秒)
+      - SILO_CACHE_CACHE_PARTITION=10 # 缓存分区数，此值不能随意修改会导致缓存保存到不同的节点中
       # PostgreSQL数据库配置
-      - QQFUN_POSTGRES_DEBUG=false # 是否启用数据库调试模式
-      - QQFUN_POSTGRES_DSN=postgres://silo:silo@localhost:15432/silo?sslmode=disable&TimeZone=Asia/Singapore # 数据库连接字符串
-      - QQFUN_POSTGRES_PREPARE_STMT=false # 是否启用预编译语句，提高性能但可能导致缓存计划错误
-      - QQFUN_POSTGRES_MAX_IDLE_CONNS=10 # 数据库连接池最大空闲连接数
-      - QQFUN_POSTGRES_MAX_OPEN_CONNS=100 # 数据库连接池最大打开连接数
-      - QQFUN_POSTGRES_MONITOR_INTERVAL=60s # 数据库监控间隔时间
+      - SILO_POSTGRES_DEBUG=false # 是否启用数据库调试模式
+      - SILO_POSTGRES_DSN=postgres://silo:silo@localhost:15432/silo?sslmode=disable&TimeZone=Asia/Singapore # 数据库连接字符串
+      - SILO_POSTGRES_PREPARE_STMT=false # 是否启用预编译语句，提高性能但可能导致缓存计划错误
+      - SILO_POSTGRES_MAX_IDLE_CONNS=10 # 数据库连接池最大空闲连接数
+      - SILO_POSTGRES_MAX_OPEN_CONNS=100 # 数据库连接池最大打开连接数
+      - SILO_POSTGRES_MONITOR_INTERVAL=60s # 数据库监控间隔时间
       # Redis缓存配置
-      - QQFUN_REDIS_CLUSTER_ENABLED=false # 是否启用Redis集群模式
-      - QQFUN_REDIS_ADDR=localhost:6379 # Redis服务器地址
-      - QQFUN_REDIS_PASSWORD= # Redis连接密码，空表示无密码
+      - SILO_REDIS_CLUSTER_ENABLED=false # 是否启用Redis集群模式
+      - SILO_REDIS_ADDR=localhost:6379 # Redis服务器地址
+      - SILO_REDIS_PASSWORD= # Redis连接密码，空表示无密码
       # 日志配置
-      - QQFUN_LOG_LEVEL=debug # 日志级别：debug/info/warn/error
-      - QQFUN_LOG_STRUCT_LOG=true # 是否使用结构化日志格式(JSON)
-      - QQFUN_LOG_PRETTY=true # 是否格式化JSON输出，提高可读性
-      - QQFUN_LOG_NO_COLOR=false # 是否禁用控制台日志颜色
-      - QQFUN_LOG_WITH_SERVER_INFO=true # 是否在日志中包含服务器信息
-      - QQFUN_LOG_CONSOLE_LOGGING_ENABLED=false # 是否启用控制台日志输出
-      - QQFUN_LOG_FILE_LOGGING_ENABLED=false # 是否启用文件日志输出
-      - QQFUN_LOG_DIRECTORY=./logs # 日志文件存储目录
-      - QQFUN_LOG_FILENAME=app.log # 日志文件名
-      - QQFUN_LOG_FILE_PERMISSION=644 # 日志文件权限(rw-r--r--)
-      - QQFUN_LOG_MAX_SIZE=100 # 日志文件最大大小(MB)，超过后滚动
-      - QQFUN_LOG_MAX_BACKUPS=3 # 保留的日志备份文件数量
-      - QQFUN_LOG_MAX_AGE=28 # 日志文件最大保留天数
-      - QQFUN_LOG_TIME_FIELD_FORMAT=2006-01-02 15:04:05.000 # 日志时间字段格式
-      - QQFUN_LOG_TIMESTAMP_FIELD_NAME=timestamp # 日志中时间戳字段名
-      - QQFUN_LOG_LEVEL_FIELD_NAME=level # 日志中级别字段名
-      - QQFUN_LOG_MESSAGE_FIELD_NAME=message # 日志中消息字段名
-      - QQFUN_LOG_ERROR_FIELD_NAME=error # 日志中错误字段名
+      - SILO_LOG_LEVEL=debug # 日志级别：debug/info/warn/error
+      - SILO_LOG_STRUCT_LOG=true # 是否使用结构化日志格式(JSON)
+      - SILO_LOG_PRETTY=true # 是否格式化JSON输出，提高可读性
+      - SILO_LOG_NO_COLOR=false # 是否禁用控制台日志颜色
+      - SILO_LOG_WITH_SERVER_INFO=true # 是否在日志中包含服务器信息
+      - SILO_LOG_CONSOLE_LOGGING_ENABLED=false # 是否启用控制台日志输出
+      - SILO_LOG_FILE_LOGGING_ENABLED=false # 是否启用文件日志输出
+      - SILO_LOG_DIRECTORY=./logs # 日志文件存储目录
+      - SILO_LOG_FILENAME=app.log # 日志文件名
+      - SILO_LOG_FILE_PERMISSION=644 # 日志文件权限(rw-r--r--)
+      - SILO_LOG_MAX_SIZE=100 # 日志文件最大大小(MB)，超过后滚动
+      - SILO_LOG_MAX_BACKUPS=3 # 保留的日志备份文件数量
+      - SILO_LOG_MAX_AGE=28 # 日志文件最大保留天数
+      - SILO_LOG_TIME_FIELD_FORMAT=2006-01-02 15:04:05.000 # 日志时间字段格式
+      - SILO_LOG_TIMESTAMP_FIELD_NAME=timestamp # 日志中时间戳字段名
+      - SILO_LOG_LEVEL_FIELD_NAME=level # 日志中级别字段名
+      - SILO_LOG_MESSAGE_FIELD_NAME=message # 日志中消息字段名
+      - SILO_LOG_ERROR_FIELD_NAME=error # 日志中错误字段名
       # API配置
-      - QQFUN_API_BASE_API_CONFIG_SKIP_AUTH=false # 是否跳过API认证
-      - QQFUN_API_BASE_API_CONFIG_SWAGGER=true # 是否启用Swagger文档
-      - QQFUN_API_BASE_API_CONFIG_PORT=8080 # API服务端口
-      - QQFUN_API_BASE_API_CONFIG_CORS=true # 是否启用跨域资源共享
-      - QQFUN_API_BASE_API_CONFIG_REQUEST_LOG_ENABLED=true # 是否启用请求日志
-      - QQFUN_API_BASE_API_CONFIG_RATE_LIMIT_ENABLED=true # 是否启用API限流
-      - QQFUN_API_BASE_API_CONFIG_RATE_LIMIT_RATE=100 # API限流速率(请求/秒)
-      - QQFUN_API_BASE_API_CONFIG_FRONT_DOMAIN= # 前端域名，用于CORS验证
-      - QQFUN_API_BASE_API_CONFIG_REQUEST_TTL=60s # 请求缓存过期时间
-      - QQFUN_API_BASE_API_CONFIG_REQUEST_KEY= # 请求缓存密钥
+      - SILO_API_BASE_API_CONFIG_SKIP_AUTH=false # 是否跳过API认证
+      - SILO_API_BASE_API_CONFIG_SWAGGER=true # 是否启用Swagger文档
+      - SILO_API_BASE_API_CONFIG_PORT=8080 # API服务端口
+      - SILO_API_BASE_API_CONFIG_CORS=true # 是否启用跨域资源共享
+      - SILO_API_BASE_API_CONFIG_REQUEST_LOG_ENABLED=true # 是否启用请求日志
+      - SILO_API_BASE_API_CONFIG_RATE_LIMIT_ENABLED=true # 是否启用API限流
+      - SILO_API_BASE_API_CONFIG_RATE_LIMIT_RATE=100 # API限流速率(请求/秒)
+      - SILO_API_BASE_API_CONFIG_FRONT_DOMAIN= # 前端域名，用于CORS验证
+      - SILO_API_BASE_API_CONFIG_REQUEST_TTL=60s # 请求缓存过期时间
+      - SILO_API_BASE_API_CONFIG_REQUEST_KEY= # 请求缓存密钥
       # Admin特有配置 - 仅admin服务使用
-      - QQFUN_API_AUTH_SIGNING_KEY=wegijnweoigj # JWT签名密钥，生产环境请修改
-      - QQFUN_API_AUTH_ONLINE_TIME=7200 # 用户在线时间(秒)
-      - QQFUN_API_SUPER_ADMIN_NAME=admin # 超级管理员用户名
-      - QQFUN_API_SUPER_ADMIN_EMAIL=admin@example.com # 超级管理员邮箱
-      - QQFUN_API_SUPER_ADMIN_PASSWORD=admin123 # 超级管理员密码，生产环境请修改
+      - SILO_API_AUTH_SIGNING_KEY=wegijnweoigj # JWT签名密钥，生产环境请修改
+      - SILO_API_AUTH_ONLINE_TIME=7200 # 用户在线时间(秒)
+      - SILO_API_SUPER_ADMIN_NAME=admin # 超级管理员用户名
+      - SILO_API_SUPER_ADMIN_EMAIL=admin@example.com # 超级管理员邮箱
+      - SILO_API_SUPER_ADMIN_PASSWORD=admin123 # 超级管理员密码，生产环境请修改
       # APM监控配置
-      - QQFUN_APM_ENABLED=false # 是否启用APM监控
-      - QQFUN_APM_SERVER_URL= # APM服务器地址
-      - QQFUN_APM_SECRET_TOKEN= # APM认证令牌
-      - QQFUN_APM_SERVICE_NAME= # APM服务名称
+      - SILO_APM_ENABLED=false # 是否启用APM监控
+      - SILO_APM_SERVER_URL= # APM服务器地址
+      - SILO_APM_SECRET_TOKEN= # APM认证令牌
+      - SILO_APM_SERVICE_NAME= # APM服务名称

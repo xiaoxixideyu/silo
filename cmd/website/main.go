@@ -17,7 +17,7 @@ func main() {
 	// 解析命令行参数
 	needInit := flag.Bool("init", false, "Initialize database")
 	configPath := flag.String("config", "../../configs/website.yaml", "Path to config file")
-	prefix := flag.String("p", "QQFUN", "Environment variable prefix (default: QQFUN)")
+	prefix := flag.String("p", "SILO", "Environment variable prefix (default: SILO)")
 	flag.Parse()
 
 	// 初始化配置
