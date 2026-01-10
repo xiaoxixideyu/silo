@@ -48,6 +48,9 @@ spec:
         - name: filebeat-config
           configMap:
             name: filebeat-config
+        - name: varlog
+          hostPath:
+            path: /var/log
       containers:
         - name: website
           image: silo
@@ -116,10 +119,27 @@ spec:
           args:
             - "-e"
             - "--strict.perms=false"
-          restartPolicy: Always # makes it as a sidecar container
+          restartPolicy: Always
+          env:
+            - name: ELASTICSEARCH_HOSTS
+              value: "http://elasticsearch:9200"
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: SILO_APP_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: server-env
+                  key: SILO_APP_ENVIRONMENT
+          securityContext:
+            runAsUser: 0
           volumeMounts:
             - name: app-logs
               mountPath: /app/logs
             - name: filebeat-config
               mountPath: /usr/share/filebeat/filebeat.yml
               subPath: filebeat.yml
+            - name: varlog
+              mountPath: /var/log
+              readOnly: true

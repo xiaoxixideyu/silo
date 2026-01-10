@@ -1,7 +1,7 @@
 FROM golang:1.24-alpine AS builder
 WORKDIR /app
 ENV CGO_ENABLED=0
-COPY go.mod ./
+COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 RUN go build -o /out/admin ./cmd/admin/main.go
@@ -14,5 +14,5 @@ RUN apk --no-cache add ca-certificates
 COPY --from=builder /out/admin /app/admin
 COPY --from=builder /out/website /app/website
 WORKDIR /app
-ENTRYPOINT ["./${SILO_APP_SERVER_TYPE}"]
+ENTRYPOINT ["sh", "-c", "./${SILO_APP_SERVER_TYPE} \"$@\"", "--"]
 CMD ["start"]
